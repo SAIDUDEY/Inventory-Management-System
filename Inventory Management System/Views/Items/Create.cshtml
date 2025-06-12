@@ -1,0 +1,182 @@
+﻿@model Inventory_Management_System.Models.Item
+
+@{
+    ViewData["Title"] = "Create Item";
+}
+
+<style>
+    /* Ensure html and body take full height and set a modern font */
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333; /* Default text color */
+    }
+
+    /* Body background with a subtle, professional gradient */
+    body {
+        background: linear-gradient(to bottom right, #e0f2f7, #c7e9ed); /* Light blue-green gradient */
+        display: flex; /* Use flex to push content and footer */
+        flex-direction: column;
+        min-height: 100vh; /* Ensure it covers the full viewport height */
+    }
+
+    /* Main page wrapper to center the form and fill available space */
+    .page-wrapper {
+        flex-grow: 1; /* Allows it to take up available vertical space */
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        padding: 40px 20px; /* Add some padding around the content */
+        box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    /* Container for the form itself */
+    .create-container {
+        background-color: #FFFFFF;
+        padding: 45px; /* Increased padding */
+        border-radius: 15px; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+        width: 100%;
+        max-width: 650px; /* Slightly wider form for better layout */
+        box-sizing: border-box;
+        border: 1px solid #e0e0e0; /* Subtle border */
+    }
+
+    h1 {
+        font-weight: 700; /* Bolder title */
+        text-align: center;
+        margin-bottom: 10px; /* Less space between h1 and h4 */
+        color: #2c3e50; /* Dark, professional blue-grey for the main heading */
+        font-size: 2.2em; /* Larger title */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+    }
+
+    h4 {
+        text-align: center;
+        margin-bottom: 30px; /* More space below sub-heading */
+        color: #7f8c8d; /* Muted grey for the sub-heading */
+        font-size: 1.1em;
+        font-weight: 400;
+    }
+
+    .form-group {
+        margin-bottom: 1.75rem; /* More space between form fields */
+    }
+
+    .control-label {
+        color: #34495e; /* Darker blue-grey for labels */
+        font-weight: 600; /* Bolder labels */
+        margin-bottom: 8px; /* Space between label and input */
+        display: block; /* Make label a block element */
+        font-size: 0.95em;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da; /* Standard border */
+        border-radius: 8px; /* Slightly rounded input fields */
+        padding: 12px 15px; /* Comfortable padding */
+        font-size: 1em;
+        color: #495057; /* Standard dark text for input fields */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #8a2be2; /* Violet border on focus */
+        box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25); /* Violet shadow on focus */
+        outline: none; /* Remove default outline */
+    }
+
+    /* Style for validation error messages */
+    .text-danger {
+        color: #e74c3c; /* A more vibrant red for validation errors */
+        font-size: 0.875em;
+        margin-top: 5px; /* Space from input field */
+        display: block; /* Ensure it takes its own line */
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 12px 20px; /* Larger button */
+        font-size: 1.15rem; /* Slightly larger font */
+        background-color: #8a2be2; /* Violet for the primary button */
+        border-color: #8a2be2;
+        border-radius: 8px; /* Consistent rounded corners */
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    }
+
+    .btn-primary:hover {
+        background-color: #6a1aae; /* Darker violet on hover */
+        border-color: #6a1aae;
+        transform: translateY(-2px); /* Subtle lift effect */
+        box-shadow: 0 6px 20px rgba(138, 43, 226, 0.45);
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 30px; /* More space above the link */
+    }
+
+    .back-link a {
+        color: #3498db; /* Blue for the "Back to List" link */
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .back-link a:hover {
+        color: #2980b9; /* Darker blue on hover */
+        text-decoration: underline;
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="create-container">
+        <h1>Create</h1>
+        <h4>Add a New Item to Your Inventory</h4>
+        <hr />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Supplier" class="control-label"></label>
+                <input asp-for="Supplier" class="form-control" />
+                <span asp-validation-for="Supplier" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create Item" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="back-link">
+            <a asp-action="Index">Back to Items List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

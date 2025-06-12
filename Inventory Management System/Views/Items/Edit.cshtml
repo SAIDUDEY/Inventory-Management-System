@@ -1,0 +1,197 @@
+﻿@model Inventory_Management_System.Models.Item
+
+@{
+    ViewData["Title"] = "Edit Item"; /* Changed title for clarity */
+}
+
+<style>
+    /* Ensure html and body take full height and set a modern font */
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333; /* Default text color */
+    }
+
+    /* Body background with a soothing, professional gradient */
+    body {
+        background: linear-gradient(to bottom right, #f2f7f9, #e9f0f3); /* Very light blue-grey gradient */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Main page wrapper to center the form and fill available space */
+    .page-wrapper {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Center vertically */
+        padding: 40px 20px;
+        box-sizing: border-box;
+    }
+
+    /* Container for the form itself, acting like a clean card */
+    .edit-form-container {
+        background-color: #FFFFFF;
+        padding: 45px; /* Increased padding */
+        border-radius: 15px; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+        width: 100%;
+        max-width: 650px; /* Consistent max-width with Create page */
+        box-sizing: border-box;
+        border: 1px solid #e0e0e0; /* Subtle border */
+    }
+
+    h1 {
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #2c3e50; /* Dark, professional blue-grey for the main heading */
+        font-size: 2.2em;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+    }
+
+    h4 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #7f8c8d; /* Muted grey for the sub-heading */
+        font-size: 1.1em;
+        font-weight: 400;
+    }
+
+    hr {
+        border: none; /* Remove default border */
+        border-top: 1px solid #e9ecef; /* Lighter, subtle horizontal line */
+        margin-top: 25px; /* More space above HR */
+        margin-bottom: 35px; /* More space after HR */
+    }
+
+    .form-group {
+        margin-bottom: 1.75rem; /* More space between form fields */
+    }
+
+    .control-label {
+        color: #34495e; /* Darker blue-grey for labels */
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 0.95em;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1em;
+        color: #495057;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #1abc9c; /* Teal border on focus */
+            box-shadow: 0 0 0 0.25rem rgba(26, 188, 156, 0.25); /* Teal shadow on focus */
+            outline: none;
+        }
+
+    /* Style for validation error messages */
+    .text-danger {
+        color: #e74c3c; /* Vibrant red for validation errors */
+        font-size: 0.875em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1.15rem;
+        background-color: #1abc9c; /* Teal for the primary button */
+        border-color: #1abc9c;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+    }
+
+        .btn-primary:hover {
+            background-color: #16a085; /* Darker teal on hover */
+            border-color: #16a085;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 188, 156, 0.45);
+        }
+
+    .action-link-container {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 25px; /* More space above the top border */
+        border-top: 1px solid #e9ecef; /* Consistent light border */
+    }
+
+        .action-link-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #3498db; /* Blue for the "Back to List" link */
+            border: 1px solid #3498db;
+            border-radius: 8px; /* Consistent rounded corners */
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+            .action-link-container a:hover {
+                background-color: #3498db;
+                color: white;
+                box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+                transform: translateY(-1px);
+            }
+</style>
+
+<div class="page-wrapper">
+    <div class="edit-form-container">
+        <h1>Edit Item Details</h1> <h4>Update the Item Information</h4> <hr />
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <input type="hidden" asp-for="id" /> @* Ensure ID is passed with the form *@
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Supplier" class="control-label"></label>
+                <input asp-for="Supplier" class="form-control" />
+                <span asp-validation-for="Supplier" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+            </div>
+        </form>
+
+        <div class="action-link-container">
+            <a asp-action="Index">Back to Items List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,321 @@
+﻿@model IEnumerable<Inventory_Management_System.Models.Item>
+
+@{
+    ViewData["Title"] = "Items List";
+}
+
+<style>
+    /* Ensure the body and html take up full height */
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A modern, clean font */
+        background: linear-gradient(to bottom right, #f0f2f5, #e0e4eb); /* Softer, modern background */
+        color: #333; /* Default text color for better readability */
+    }
+
+    /* Main page wrapper to center the content and fill height */
+    .page-wrapper {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: flex-start; /* Align content to the top */
+        min-height: 100vh; /* Ensure it takes full viewport height */
+        padding: 40px 20px;
+        box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    /* Container for the entire index page content (header, table) */
+    .index-container {
+        background-color: #ffffff; /* White background for the main content area */
+        border-radius: 15px; /* Slightly more rounded for a modern look */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+        padding: 35px; /* Increased padding */
+        width: 100%;
+        max-width: 1300px; /* Max width for wider tables */
+        box-sizing: border-box;
+        border: 1px solid #e0e0e0; /* Subtle border */
+    }
+
+    /* Page title styling */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 35px; /* More space below header */
+        flex-wrap: wrap;
+        border-bottom: 1px solid #f0f0f0; /* Subtle line below header */
+        padding-bottom: 20px;
+    }
+
+    .page-header h1 {
+        font-weight: 700; /* Bolder title */
+        color: #2c3e50; /* Darker, more professional title color */
+        font-size: 2.5em; /* Larger title */
+        margin: 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.08); /* More pronounced text shadow */
+    }
+
+    .header-actions {
+        margin-top: 10px;
+    }
+
+    .header-actions .btn-create {
+        background-color: #6c5ce7; /* A more vibrant, modern purple */
+        color: white;
+        border: none;
+        padding: 12px 25px; /* Larger button */
+        border-radius: 30px; /* Pill-shaped button */
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px; /* Space between icon and text */
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    .header-actions .btn-create:hover {
+        background-color: #5a4bcf; /* Darker purple on hover */
+        box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        transform: translateY(-2px); /* Slight lift effect */
+    }
+
+    /* Table styling */
+    .item-table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Lighter shadow for table */
+        background-color: #fff; /* Ensure table background is white */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate; /* Use separate to allow border-spacing */
+        border-spacing: 0; /* Remove space between borders */
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa; /* Light grey header background */
+        color: #555;
+        font-weight: 600;
+        text-align: left;
+        padding: 18px 25px; /* Increased padding */
+        border-bottom: 2px solid #e9ecef; /* Slightly thicker border */
+        text-transform: uppercase; /* Uppercase column headers */
+        font-size: 0.95em;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr {
+        background-color: #ffffff;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.2s ease, transform 0.2s ease; /* Add transform for subtle effect */
+    }
+
+    .table tbody tr:hover {
+        background-color: #f6f9fc; /* Very light hover effect */
+        transform: translateY(-1px); /* Slight lift on hover */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody td {
+        padding: 16px 25px; /* Increased padding */
+        vertical-align: middle;
+        color: #495057; /* Darker text for data cells */
+        font-size: 0.92em;
+    }
+
+    /* Specific column width adjustments for better layout */
+    .table th:nth-child(1), .table td:nth-child(1) { width: 20%; } /* Name */
+    .table th:nth-child(2), .table td:nth-child(2) { width: 10%; text-align: center; } /* Quantity */
+    .table th:nth-child(3), .table td:nth-child(3) { width: 10%; text-align: right; } /* Price */
+    .table th:nth-child(4), .table td:nth-child(4) { width: 15%; } /* Category */
+    .table th:nth-child(5), .table td:nth-child(5) { width: 15%; } /* Supplier */
+    .table th:nth-child(6), .table td:nth-child(6) { width: 30%; text-align: center; } /* Actions */
+
+    /* Action buttons in table rows */
+    .table tbody td .action-btn {
+        display: inline-block;
+        padding: 8px 15px; /* Slightly larger buttons */
+        margin: 0 5px; /* More space between buttons */
+        text-decoration: none;
+        border-radius: 20px; /* More rounded buttons */
+        font-size: 0.85em; /* Slightly smaller font for actions */
+        transition: all 0.3s ease;
+        font-weight: 500;
+        text-transform: uppercase; /* Uppercase action text */
+        letter-spacing: 0.3px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for action buttons */
+    }
+
+    .table tbody td .action-btn.edit {
+        background-color: #e0f2f7; /* Light blue */
+        color: #007bff;
+        border: 1px solid #b3e0ed;
+    }
+
+    .table tbody td .action-btn.edit:hover {
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    .table tbody td .action-btn.details {
+        background-color: #e2fce9; /* Light green */
+        color: #28a745;
+        border: 1px solid #bcead1;
+    }
+
+    .table tbody td .action-btn.details:hover {
+        background-color: #28a745;
+        color: white;
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    }
+
+    .table tbody td .action-btn.delete {
+        background-color: #ffe0e6; /* Light red */
+        color: #dc3545;
+        border: 1px solid #f9b3c1;
+    }
+
+    .table tbody td .action-btn.delete:hover {
+        background-color: #dc3545;
+        color: white;
+        box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .page-header h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .header-actions {
+            width: 100%;
+            text-align: center;
+        }
+
+        .header-actions .btn-create {
+            width: 100%;
+            padding: 10px 20px;
+        }
+
+        .table thead {
+            display: none; /* Hide table headers on small screens */
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table tbody td {
+            display: block;
+            text-align: right !important; /* Force text to right for data */
+            padding: 10px 20px;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+
+        .table tbody td:last-child {
+            border-bottom: none;
+            padding-bottom: 15px;
+            text-align: center !important; /* Center actions */
+        }
+
+        .table tbody td::before {
+            content: attr(data-label); /* Use data-label for pseudo-elements */
+            float: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #777;
+            font-size: 0.85em;
+        }
+
+        /* Assign data-label to each td for responsive display */
+        .table tbody td:nth-child(1)::before { content: "Name:"; }
+        .table tbody td:nth-child(2)::before { content: "Quantity:"; }
+        .table tbody td:nth-child(3)::before { content: "Price:"; }
+        .table tbody td:nth-child(4)::before { content: "Category:"; }
+        .table tbody td:nth-child(5)::before { content: "Supplier:"; }
+        .table tbody td:nth-child(6)::before { content: "Actions:"; }
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="index-container">
+        <div class="page-header">
+            <h1>Items List</h1>
+            <div class="header-actions">
+                <a asp-action="Create" class="btn btn-create">
+                    <i class="fas fa-plus-circle"></i> Create New Item
+                </a>
+            </div>
+        </div>
+
+        <div class="item-table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th style="text-align: center;">
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </th>
+                        <th style="text-align: right;">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Supplier)
+                        </th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td data-label="Name">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td data-label="Quantity" style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td data-label="Price" style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td data-label="Category">
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td data-label="Supplier">
+                                @Html.DisplayFor(modelItem => item.Supplier)
+                            </td>
+                            <td data-label="Actions" style="text-align: center;">
+                                <a asp-action="Edit" asp-route-id="@item.id" class="action-btn edit">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.id" class="action-btn details">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.id" class="action-btn delete">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+}

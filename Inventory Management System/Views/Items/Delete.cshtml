@@ -1,0 +1,255 @@
+﻿@model Inventory_Management_System.Models.Item
+
+@{
+    ViewData["Title"] = "Delete Item"; /* More descriptive title */
+    // Override body styles to ensure a clean, modern background
+    Layout = "_Layout"; // Keep _Layout for shared elements like navigation/footer
+}
+
+<style>
+    /* Global body styling for a professional look */
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333; /* Default text color */
+    }
+
+    /* Body background: A very subtle, dark-to-light gradient to create depth */
+    body {
+        background: linear-gradient(to top, #2c3e50, #34495e); /* Dark blue-grey gradient */
+        color: #f0f0f0; /* Light text color for elements outside the card */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        /* Ensure no interference from _Layout background properties */
+        background-image: none !important;
+    }
+
+        /* Disable _Layout's pseudo-element overlay if it exists, for a cleaner solid background */
+        body::before {
+            content: none !important;
+        }
+
+    /* Main content wrapper to center the delete confirmation card */
+    .main-content {
+        flex-grow: 1; /* Allows it to take up available vertical space */
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        padding: 30px 20px; /* Padding around the container */
+        box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    /* The delete confirmation card */
+    .delete-container {
+        background-color: #FFFFFF; /* Pristine white background for the card */
+        padding: 45px; /* Generous padding */
+        border-radius: 15px; /* Consistent rounded corners */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* More pronounced, soft shadow */
+        max-width: 650px; /* Slightly wider for better layout */
+        width: 100%;
+        box-sizing: border-box;
+        color: #333333; /* Default text color for inside the white container */
+        text-align: center; /* Center align all content inside */
+        border: 1px solid #e0e0e0; /* Subtle border */
+    }
+
+    h1 {
+        font-weight: 700;
+        color: #e74c3c; /* Strong, impactful red for the primary action */
+        margin-bottom: 10px;
+        font-size: 2.8em; /* Larger and more prominent */
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.1); /* Subtle text shadow */
+    }
+
+    h3 {
+        font-weight: 500;
+        color: #f39c12; /* Warning orange for the confirmation question */
+        margin-bottom: 30px;
+        font-size: 1.6em;
+    }
+
+    h4 {
+        font-weight: 600;
+        color: #2c3e50; /* Dark blue-gray for the "Item Details" heading */
+        margin-bottom: 20px;
+        font-size: 1.3em;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #e9ecef; /* Lighter, clean separator line */
+        margin: 25px 0;
+    }
+
+    /* Styling for the detail names and values (Description List) */
+    dl {
+        text-align: left; /* Align text left within the DL */
+        margin-bottom: 35px; /* Space below the details list */
+        display: grid; /* Use grid for better control over dt/dd alignment */
+        grid-template-columns: 1fr 2fr; /* Example: 1 part for dt, 2 parts for dd */
+        gap: 10px 0; /* Space between rows/columns */
+    }
+
+    dt {
+        font-weight: 600;
+        color: #34495e; /* Darker blue-grey for property names */
+        padding-top: 8px; /* Padding above each name for spacing */
+        border-top: 1px solid #f8f8f8; /* Very subtle top border for separation */
+    }
+
+    dd {
+        color: #555555; /* A medium gray for property values */
+        margin-left: 0; /* Remove default indent */
+        padding-top: 8px; /* Match dt padding */
+        word-break: break-word; /* Ensure long words break */
+    }
+
+        dt:first-of-type, dd:first-of-type {
+            border-top: none; /* No top border for the very first item */
+            padding-top: 0;
+        }
+
+    /* Action buttons container */
+    .action-buttons {
+        display: flex;
+        justify-content: center; /* Center buttons horizontally */
+        gap: 20px; /* Space between buttons */
+        margin-top: 30px;
+        flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+    }
+
+    input[type="submit"] {
+        background-color: #e74c3c; /* Strong red for delete button */
+        color: white;
+        border: none;
+        padding: 14px 30px; /* Larger padding for a more prominent button */
+        font-weight: 700; /* Bolder text */
+        border-radius: 8px; /* Consistent rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3); /* More pronounced shadow */
+        text-transform: uppercase; /* Uppercase text */
+        letter-spacing: 0.5px;
+        min-width: 150px; /* Ensure minimum width */
+    }
+
+        input[type="submit"]:hover {
+            background-color: #c0392b; /* Darker red on hover */
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.45);
+        }
+
+    a.btn-back {
+        background-color: #95a5a6; /* A neutral, calming gray for "Back to List" */
+        color: white;
+        text-decoration: none;
+        padding: 14px 30px; /* Consistent padding */
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        font-weight: 700;
+        box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        min-width: 150px;
+    }
+
+        a.btn-back:hover {
+            background-color: #7f8c8d; /* Darker gray on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(149, 165, 166, 0.45);
+        }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .delete-container {
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+        }
+
+        dl {
+            grid-template-columns: 1fr; /* Stack dt and dd on smaller screens */
+            gap: 0;
+            text-align: left; /* Keep text alignment left */
+        }
+
+        dt {
+            padding-top: 15px; /* More space when stacked */
+            margin-bottom: 5px;
+        }
+
+        dd {
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            flex-direction: column; /* Stack buttons vertically */
+            gap: 15px; /* Space between stacked buttons */
+        }
+
+        input[type="submit"],
+        a.btn-back {
+            width: 100%; /* Full width buttons when stacked */
+            max-width: 300px; /* Limit max width for stacked buttons */
+            margin: 0 auto; /* Center stacked buttons */
+        }
+    }
+
+    @@media (max-width: 480px) {
+        h1 {
+            font-size: 1.8em;
+        }
+
+        h3 {
+            font-size: 1.1em;
+        }
+
+        .delete-container {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="main-content">
+    <div class="delete-container">
+        <h1>Confirm Deletion</h1> <h3>Are you absolutely sure you want to delete this item? This action cannot be undone.</h3> <h4>Item Details</h4>
+        <hr />
+        <dl>
+            <div>
+                <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd>@Html.DisplayFor(model => model.Name)</dd>
+            </div>
+            <div>
+                <dt>@Html.DisplayNameFor(model => model.Quantity)</dt>
+                <dd>@Html.DisplayFor(model => model.Quantity)</dd>
+            </div>
+            <div>
+                <dt>@Html.DisplayNameFor(model => model.Price)</dt>
+                <dd>@Html.DisplayFor(model => model.Price)</dd>
+            </div>
+            <div>
+                <dt>@Html.DisplayNameFor(model => model.Category)</dt>
+                <dd>@Html.DisplayFor(model => model.Category)</dd>
+            </div>
+            <div>
+                <dt>@Html.DisplayNameFor(model => model.Supplier)</dt>
+                <dd>@Html.DisplayFor(model => model.Supplier)</dd>
+            </div>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="id" /> @* Ensure ID is passed for deletion *@
+            <div class="action-buttons">
+                <input type="submit" value="Delete Item" /> <a asp-action="Index" class="btn-back">Cancel & Go Back</a>
+            </div>
+        </form>
+    </div>
+</div>

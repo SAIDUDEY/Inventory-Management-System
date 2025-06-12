@@ -1,0 +1,242 @@
+﻿@model Inventory_Management_System.Models.Item
+
+@{
+    ViewData["Title"] = "Item Details";
+}
+
+<style>
+    /* Ensure html and body take full height and set a modern font */
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333; /* Default text color */
+    }
+
+    /* Body background with a fresh, inviting gradient */
+    body {
+        background: linear-gradient(to bottom right, #f8fcfd, #eaf2f8); /* Very light, cool blue gradient */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Main page wrapper to center the details card and fill available space */
+    .page-wrapper {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Center vertically */
+        padding: 40px 20px;
+        box-sizing: border-box;
+    }
+
+    /* Container for the item details, acting like a pristine card */
+    .details-card {
+        background-color: #FFFFFF; /* Pure white background for content */
+        padding: 45px; /* Generous padding */
+        border-radius: 15px; /* Consistent rounded corners */
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1); /* Deeper, softer shadow for elegance */
+        width: 100%;
+        max-width: 750px; /* Slightly wider for details view */
+        box-sizing: border-box;
+        border: 1px solid #e0e0e0; /* Subtle border */
+        position: relative; /* Needed for potential future overlays/decorations */
+        overflow: hidden; /* Ensure nothing spills out */
+    }
+
+        /* Decorative element - a subtle wave/shape at the top right */
+        .details-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(0, 123, 255, 0.05); /* Light blue accent */
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+        }
+
+    h1 {
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #2c3e50; /* Dark, professional blue-grey */
+        font-size: 2.5em; /* Larger title for a details page */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+        position: relative; /* Ensure text is above ::before */
+        z-index: 1;
+    }
+
+    h4 {
+        text-align: center;
+        margin-bottom: 35px; /* More space below sub-heading */
+        color: #7f8c8d; /* Muted grey for sub-heading */
+        font-size: 1.2em;
+        font-weight: 400;
+        position: relative;
+        z-index: 1;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #e9ecef; /* Light, subtle separator */
+        margin-top: 25px;
+        margin-bottom: 35px; /* Generous spacing */
+        position: relative;
+        z-index: 1;
+    }
+
+    dl.row {
+        margin-bottom: 30px; /* Space below the details list */
+        position: relative;
+        z-index: 1;
+    }
+
+        dl.row dt {
+            font-weight: 600; /* Bolder labels */
+            color: #34495e; /* Darker blue-grey for labels */
+            padding-right: 15px; /* Space between label and value */
+            margin-bottom: 15px; /* Space between each row on smaller screens */
+            font-size: 1em;
+        }
+
+        dl.row dd {
+            color: #495057; /* Darker text for values */
+            margin-bottom: 15px;
+            font-size: 1em;
+            /* Ensure values align nicely with labels in the responsive layout */
+            text-align: left; /* Default text alignment */
+        }
+
+    /* Action links container for horizontal alignment */
+    .action-links {
+        display: flex;
+        justify-content: space-between; /* Space out the links */
+        align-items: center;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #e9ecef;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        gap: 15px; /* Space between items if they wrap */
+        position: relative;
+        z-index: 1;
+    }
+
+        .action-links a {
+            display: inline-flex; /* Use flex for icon alignment if added */
+            align-items: center;
+            gap: 5px; /* Space for icon */
+            padding: 12px 25px; /* Larger padding for buttons */
+            text-decoration: none;
+            font-weight: 600; /* Bolder text for links */
+            border-radius: 8px; /* Consistent rounded corners */
+            transition: all 0.3s ease;
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+        }
+
+            .action-links a.edit-btn { /* Specific class for Edit button */
+                background-color: #007bff; /* Primary blue for edit */
+                color: white;
+                border: 1px solid #007bff;
+            }
+
+                .action-links a.edit-btn:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+                }
+
+            .action-links a.back-btn { /* Specific class for Back button */
+                background-color: #f0f3f6; /* Lighter background for 'Back' */
+                color: #555;
+                border: 1px solid #d4dae0;
+            }
+
+                .action-links a.back-btn:hover {
+                    background-color: #e2e8ed;
+                    color: #333;
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                }
+
+    /* Responsive adjustments for description list */
+    @@media (max-width: 576px) {
+        dl.row dt, dl.row dd {
+            flex: 0 0 100%; /* Make them stack on small screens */
+            max-width: 100%;
+            text-align: left !important; /* Ensure alignment */
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        dl.row dt {
+            margin-bottom: 5px; /* Less space between stacked dt and dd */
+            font-size: 0.95em;
+        }
+
+        dl.row dd {
+            margin-bottom: 20px; /* Space after each complete detail item */
+        }
+
+        .action-links {
+            flex-direction: column; /* Stack buttons vertically */
+            align-items: stretch; /* Stretch buttons to full width */
+        }
+
+            .action-links a {
+                width: 100%; /* Full width buttons */
+                margin-bottom: 10px; /* Space between stacked buttons */
+            }
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="details-card">
+        <h1>Item Details</h1>
+
+        <h4>Comprehensive View of Your Inventory Item</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Quantity)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Category)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Supplier)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Supplier)
+            </dd>
+        </dl>
+        <div class="action-links">
+            <a asp-action="Edit" asp-route-id="@Model?.id" class="edit-btn">Edit Item</a>
+            <a asp-action="Index" class="back-btn">Back to List</a>
+        </div>
+    </div>
+</div>
